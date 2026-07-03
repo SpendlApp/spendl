@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Spendl — track your subscriptions, understand your monthly spend, and stay ahead of renewals. A calm subscription tracker for iPhone.">
+  <title>Spendl — Your subscriptions, simplified</title>
+  <link rel="icon" type="image/png" href="assets/app-icon.png">
+  <link rel="apple-touch-icon" href="assets/app-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0F1F3D;
+      --slate: #1E3A5F;
+      --teal: #14B8A6;
+      --teal-dark: #0D9488;
+      --bg: #F2F2F7;
+      --card: #FFFFFF;
+      --text: #1C1C1E;
+      --text-secondary: #636366;
+      --border: rgba(0, 0, 0, 0.08);
+      --hero-gradient: linear-gradient(135deg, var(--navy) 0%, var(--slate) 100%);
+      --radius: 16px;
+      --max-width: 720px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0D1117;
+        --card: #161B22;
+        --text: #F0F6FC;
+        --text-secondary: #8B949E;
+        --border: rgba(255, 255, 255, 0.08);
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--teal-dark);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(242, 242, 247, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      header {
+        background: rgba(13, 17, 23, 0.85);
+      }
+    }
+
+    .header-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.125rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo:hover {
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+
+    nav a:hover {
+      color: var(--teal-dark);
+      text-decoration: none;
+    }
+
+    /* Hero */
+    .hero {
+      background: var(--hero-gradient);
+      color: white;
+      padding: 72px 24px 80px;
+      text-align: center;
+    }
+
+    .hero-inner {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .hero-icon {
+      width: 120px;
+      height: 120px;
+      border-radius: 28px;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto 28px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.25rem, 5vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .hero .tagline {
+      font-size: 1.25rem;
+      opacity: 0.85;
+      margin-bottom: 32px;
+      font-weight: 400;
+    }
+
+    .hero .lead {
+      font-size: 1.0625rem;
+      opacity: 0.75;
+      max-width: 520px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 10px 18px;
+      border-radius: 100px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    /* Main content */
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    section {
+      padding-top: 64px;
+    }
+
+    section h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    section .section-lead {
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      max-width: var(--max-width);
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+
+    .card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .card p {
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .feature-grid .card {
+      margin-bottom: 0;
+    }
+
+    .tier-label {
+      display: inline-block;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+
+    .tier-free {
+      background: rgba(20, 184, 166, 0.12);
+      color: var(--teal-dark);
+    }
+
+    .tier-pro {
+      background: rgba(15, 31, 61, 0.1);
+      color: var(--navy);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .tier-pro {
+        background: rgba(20, 184, 166, 0.15);
+        color: var(--teal);
+      }
+    }
+
+    /* Legal sections */
+    .legal {
+      max-width: var(--max-width);
+    }
+
+    .legal h3 {
+      font-size: 1.0625rem;
+      font-weight: 600;
+      margin: 28px 0 8px;
+    }
+
+    .legal h3:first-of-type {
+      margin-top: 0;
+    }
+
+    .legal p,
+    .legal li {
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .legal ul {
+      padding-left: 1.25rem;
+      margin-bottom: 12px;
+    }
+
+    .legal li {
+      margin-bottom: 6px;
+    }
+
+    .legal .updated {
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    /* Contact */
+    .contact-card {
+      max-width: var(--max-width);
+    }
+
+    .contact-card a.email {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.0625rem;
+      font-weight: 600;
+      color: var(--teal-dark);
+      margin-top: 8px;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+    }
+
+    footer nav {
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 600px) {
+      nav {
+        display: none;
+      }
+
+      .hero {
+        padding: 56px 20px 64px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="#" class="logo">
+        <img class="logo-icon" src="assets/app-icon.png" alt="" width="36" height="36">
+        Spendl
+      </a>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#contact">Contact</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#terms">Terms</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <img class="hero-icon" src="assets/app-icon.png" alt="Spendl app icon" width="120" height="120">
+      <h1>Spendl</h1>
+      <p class="tagline">Your subscriptions, simplified.</p>
+      <p class="lead">
+        Track recurring subscriptions, see your total monthly spend, and stay ahead of renewals —
+        without the stress of a full budgeting app.
+      </p>
+      <span class="badge">📱 Available on iPhone · iOS 17+</span>
+    </div>
+  </section>
+
+  <main>
+
+    <section id="features">
+      <h2>Everything in Spendl</h2>
+      <p class="section-lead">
+        Spendl is designed to feel calm, clear, and helpful. Add your subscriptions once and
+        get a complete picture of where your money goes each month.
+      </p>
+
+      <span class="tier-label tier-free">Free</span>
+      <div class="feature-grid">
+        <div class="card">
+          <h3>Subscription tracking</h3>
+          <p>Add, edit, and organise all your subscriptions in one place — Netflix, Spotify, gym memberships, software, and more.</p>
+        </div>
+        <div class="card">
+          <h3>Monthly &amp; annual spend</h3>
+          <p>See your total recurring spend at a glance on the dashboard, with a toggle between monthly and yearly views.</p>
+        </div>
+        <div class="card">
+          <h3>Upcoming renewals</h3>
+          <p>Know what's renewing soon so nothing catches you off guard.</p>
+        </div>
+        <div class="card">
+          <h3>Categories &amp; brand logos</h3>
+          <p>Organise subscriptions by category and add recognisable brand logos for a polished view.</p>
+        </div>
+        <div class="card">
+          <h3>Pause subscriptions</h3>
+          <p>Temporarily pause subscriptions you're not using — they stay in your list without counting toward your total.</p>
+        </div>
+        <div class="card">
+          <h3>Price change history</h3>
+          <p>When a subscription price changes, Spendl records it so you can see how costs have shifted over time.</p>
+        </div>
+        <div class="card">
+          <h3>Monthly spending goal</h3>
+          <p>Set a monthly cap and track your progress with a visual indicator on the dashboard.</p>
+        </div>
+        <div class="card">
+          <h3>Forgotten subscriptions</h3>
+          <p>Spot subscriptions that may have slipped off your radar.</p>
+        </div>
+        <div class="card">
+          <h3>Face ID &amp; passcode lock</h3>
+          <p>Keep your financial data private with biometric or passcode protection.</p>
+        </div>
+        <div class="card">
+          <h3>iCloud sync</h3>
+          <p>Your data syncs across your Apple devices when signed into iCloud.</p>
+        </div>
+        <div class="card">
+          <h3>Light &amp; dark mode</h3>
+          <p>Choose light, dark, or follow your system appearance.</p>
+        </div>
+      </div>
+
+      <span class="tier-label tier-pro" style="margin-top: 40px;">Spendl Pro</span>
+      <div class="feature-grid">
+        <div class="card">
+          <h3>Renewal notifications</h3>
+          <p>Get reminders 7, 3, and 1 day before each subscription renews.</p>
+        </div>
+        <div class="card">
+          <h3>Multi-currency</h3>
+          <p>Convert all your subscriptions into one home currency using live exchange rates.</p>
+        </div>
+        <div class="card">
+          <h3>Spending trends</h3>
+          <p>Charts and category breakdowns to understand your spending over time.</p>
+        </div>
+        <div class="card">
+          <h3>Home screen widgets</h3>
+          <p>See your monthly spend and next renewal at a glance from your home screen.</p>
+        </div>
+        <div class="card">
+          <h3>Export CSV &amp; PDF</h3>
+          <p>Download your subscription data anytime for your records.</p>
+        </div>
+        <div class="card">
+          <h3>Shared subscriptions</h3>
+          <p>Split costs with others and track your share of family or shared plans.</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 24px; max-width: var(--max-width);">
+        <h3>Spendl Pro subscription</h3>
+        <p>
+          Spendl Pro is an optional auto-renewable subscription available as a monthly or yearly plan.
+          Prices vary by region and are shown in the App Store before purchase.
+          You can manage or cancel your subscription anytime in
+          <strong>Settings → Apple ID → Subscriptions</strong> on your iPhone.
+        </p>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p class="section-lead">
+        Questions, feedback, or support — we'd love to hear from you.
+      </p>
+      <div class="card contact-card">
+        <h3>Get in touch</h3>
+        <p>For app support, feature requests, or general enquiries:</p>
+        <a class="email" href="mailto:support.spendl@gmail.com">support.spendl@gmail.com</a>
+      </div>
+    </section>
+
+    <section id="privacy">
+      <h2>Privacy Policy</h2>
+      <div class="card legal">
+        <p class="updated">Last updated: 27 June 2026</p>
+
+        <p>
+          Spendl operates the Spendl mobile application ("the App"). This Privacy Policy
+          explains how Spendl handles information when you use the App.
+        </p>
+
+        <h3>Summary</h3>
+        <p>
+          Spendl is built with privacy in mind. Your subscription data is stored on your device
+          and, if you use iCloud, synced to your personal iCloud account. Spendl does not operate
+          servers that collect or store your personal subscription data.
+        </p>
+
+        <h3>Information Spendl does not collect</h3>
+        <ul>
+          <li>Spendl does not require you to create an account.</li>
+          <li>Spendl does not collect your subscription names, amounts, or renewal dates on its servers.</li>
+          <li>Spendl does not sell your personal information to third parties.</li>
+          <li>Spendl does not use third-party analytics or advertising SDKs.</li>
+        </ul>
+
+        <h3>Information stored on your device</h3>
+        <p>
+          Spendl stores the subscription information you enter (such as names, amounts, renewal dates,
+          categories, and notes) locally on your iPhone using Apple's SwiftData framework.
+          If you are signed into iCloud and have iCloud sync enabled, this data may be synced
+          to your personal iCloud account via Apple's CloudKit service, subject to Apple's
+          <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Privacy Policy</a>.
+        </p>
+
+        <h3>Information processed by third parties</h3>
+        <ul>
+          <li>
+            <strong>Apple App Store / StoreKit</strong> — If you purchase Spendl Pro, payment and
+            subscription management are handled entirely by Apple. Spendl does not receive your payment
+            card details.
+          </li>
+          <li>
+            <strong>Exchange rate API</strong> — Spendl Pro's multi-currency feature fetches public
+            exchange rates from open.er-api.com. Only currency codes are sent in these requests;
+            no personal subscription data is included.
+          </li>
+          <li>
+            <strong>Apple Push Notification Service</strong> — Renewal reminders are scheduled
+            locally on your device. No notification content is sent to Spendl's servers.
+          </li>
+        </ul>
+
+        <h3>Face ID and passcode</h3>
+        <p>
+          If you enable App Lock, authentication is handled entirely by your device's
+          secure enclave via Apple's LocalAuthentication framework. Spendl does not receive or store
+          your biometric data.
+        </p>
+
+        <h3>Data retention and deletion</h3>
+        <p>
+          Your data remains on your device until you delete it within the app or uninstall Spendl.
+          Deleting the app removes locally stored data. iCloud-synced data can be managed through
+          your iCloud settings.
+        </p>
+
+        <h3>Children's privacy</h3>
+        <p>
+          Spendl is not directed at children under 13. Spendl does not knowingly collect personal
+          information from children.
+        </p>
+
+        <h3>Changes to this policy</h3>
+        <p>
+          Spendl may update this Privacy Policy from time to time. The "Last updated" date at the top
+          of this page will reflect any changes. Continued use of the App after changes constitutes
+          acceptance of the updated policy.
+        </p>
+
+        <h3>Contact</h3>
+        <p>
+          If you have questions about this Privacy Policy, contact Spendl at
+          <a href="mailto:support.spendl@gmail.com">support.spendl@gmail.com</a>.
+        </p>
+      </div>
+    </section>
+
+    <section id="terms">
+      <h2>Terms and Conditions</h2>
+      <div class="card legal">
+        <p class="updated">Last updated: 27 June 2026</p>
+
+        <p>
+          These Terms and Conditions ("Terms") govern your use of the Spendl mobile application
+          ("the App"). By downloading or using Spendl, you agree to these Terms.
+        </p>
+
+        <h3>1. Use of the App</h3>
+        <p>
+          Spendl is a subscription tracking tool designed to help you record and understand
+          your recurring expenses. You are responsible for the accuracy of the information
+          you enter. Spendl does not connect to your bank accounts and does not automatically
+          detect charges from financial institutions.
+        </p>
+
+        <h3>2. No financial advice</h3>
+        <p>
+          Spendl is for informational and organisational purposes only. It does not provide
+          financial, tax, or legal advice. You should consult a qualified professional for
+          financial decisions.
+        </p>
+
+        <h3>3. Spendl Pro subscription</h3>
+        <ul>
+          <li>Spendl Pro is an auto-renewable subscription purchased through the Apple App Store.</li>
+          <li>Payment is charged to your Apple ID account at confirmation of purchase.</li>
+          <li>Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current billing period.</li>
+          <li>Your account will be charged for renewal within 24 hours prior to the end of the current period.</li>
+          <li>You can manage or cancel your subscription in <strong>Settings → Apple ID → Subscriptions</strong> on your iPhone.</li>
+          <li>Any unused portion of a free trial period, if offered, is forfeited when you purchase a subscription.</li>
+          <li>Prices are subject to change. The price applicable to you is shown in the App Store at the time of purchase.</li>
+        </ul>
+
+        <h3>4. Free features</h3>
+        <p>
+          Core subscription tracking features are available at no cost. Spendl reserves the right to
+          modify which features are available in the free or Pro tiers, but will not remove
+          access to data you have already entered without reasonable notice.
+        </p>
+
+        <h3>5. Intellectual property</h3>
+        <p>
+          Spendl, including its design, code, and branding, is owned by Spendl and
+          protected by applicable intellectual property laws. You may not copy, modify, or
+          distribute the App except as permitted by Apple's App Store terms.
+        </p>
+
+        <h3>6. Disclaimer of warranties</h3>
+        <p>
+          Spendl is provided "as is" without warranties of any kind, express or implied.
+          Spendl does not guarantee that the App will be error-free, uninterrupted, or that exchange
+          rates, renewal dates, or calculations will always be accurate. You use the App
+          at your own risk.
+        </p>
+
+        <h3>7. Limitation of liability</h3>
+        <p>
+          To the maximum extent permitted by law, Spendl shall not be liable for any
+          indirect, incidental, special, or consequential damages arising from your use of
+          Spendl, including missed renewals, incorrect totals, or reliance on information
+          displayed in the App.
+        </p>
+
+        <h3>8. Apple terms</h3>
+        <p>
+          Your use of Spendl is also subject to Apple's
+          <a href="https://www.apple.com/legal/internet-services/itunes/" target="_blank" rel="noopener">Licensed Application End User License Agreement</a>
+          and App Store Terms of Service.
+        </p>
+
+        <h3>9. Changes to these Terms</h3>
+        <p>
+          Spendl may update these Terms from time to time. The updated version will be posted on
+          this page with a revised "Last updated" date. Continued use of the App after changes
+          constitutes acceptance of the updated Terms.
+        </p>
+
+        <h3>10. Governing law</h3>
+        <p>
+          These Terms are governed by the laws of New Zealand, without regard to conflict of
+          law principles. Any disputes shall be subject to the exclusive jurisdiction of the
+          courts of New Zealand.
+        </p>
+
+        <h3>11. Contact</h3>
+        <p>
+          For questions about these Terms, contact Spendl at
+          <a href="mailto:support.spendl@gmail.com">support.spendl@gmail.com</a>.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#contact">Contact</a>
+      <a href="#privacy">Privacy Policy</a>
+      <a href="#terms">Terms</a>
+    </nav>
+    <p>© 2026 Spendl</p>
+  </footer>
+
+</body>
+</html>
